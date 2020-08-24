@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild('editModal') editModal : TemplateRef<any>;
+
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit(): void {
+  
   }
 
+  addNew() {
+    this.modalService.open(this.editModal);
+  }
 }
