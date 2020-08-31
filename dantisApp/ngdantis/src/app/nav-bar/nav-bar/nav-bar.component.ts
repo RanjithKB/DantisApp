@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-nav-bar',
@@ -6,10 +6,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit {
-
-  constructor() { }
+  prod: boolean = true;
+  usr: boolean = false;
+  constructor(private render:Renderer2) { }
 
   ngOnInit(): void {
+    
+  }
+
+  addClass(val){
+    if(val ==1){
+      this.prod = true;
+      this.usr = false;
+    } else {
+      this.prod = false;
+      this.usr = true;
+    }
   }
 
 }

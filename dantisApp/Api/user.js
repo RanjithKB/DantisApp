@@ -1,16 +1,18 @@
 var express = require('express');
 var User = require('../DB/user');
 
+
 const route = express.Router();
 
 //add contact
 route.post('/',async(req,res) => {
-    const{userName,password,phoneNumber} = req.body;
+    const{userName,password,phoneNumber,superAdmin} = req.body;
 
     let user = {};
     user.userName = userName;
     user.password = password;
     user.phoneNumber = phoneNumber;
+    user.superAdmin = superAdmin;
     
     let userModel = new User(user);
     await userModel.save();
@@ -20,6 +22,26 @@ route.post('/',async(req,res) => {
     }
     res.json(resModel);
 });
+
+
+//add admin Product
+// route.post('/addProduct',async(req,res) => {
+//     const{productName,quantity,reorderQuantity,price} = req.body;
+
+//     let product = {};
+//     product.productName = productName;
+//     product.quantity = quantity;
+//     product.reorderQuantity = reorderQuantity;
+//     product.price = price;
+    
+//     let productModel = new User(product);
+//     await productModel.save();
+//     let resModel ={
+//         id: productModel._id,
+//         success: true
+//     }
+//     res.json(resModel);
+// });
 
 //delete contacts
 route.delete('/:id',(req, res) =>{

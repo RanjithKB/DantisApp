@@ -9,6 +9,9 @@ const user =  new mongoose.Schema({
     },
     phoneNumber: {
         type: Number
+    },
+    superAdmin: {
+        type: Boolean
     }
 });
 

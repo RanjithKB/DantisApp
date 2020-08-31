@@ -14,6 +14,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { NavBarComponent } from './nav-bar/nav-bar/nav-bar.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { UserComponent } from './user/user/user.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     AppLoaderComponent,
     DashboardComponent,
     LoginComponent,
-    NavBarComponent
+    NavBarComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

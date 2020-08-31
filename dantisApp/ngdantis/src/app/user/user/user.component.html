@@ -3,16 +3,16 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4 col-lg-2 mt-4">
-  <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modalPoll-1" (click)="addNew()">Add New</button>
+  <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modalPoll-1" (click)="addNew()">Add New User</button>
   </div>
   </div>
    <table class="table mt-4">
   <thead class="thead-dark">
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Price</th>
+      <th scope="col">User Name</th>
+      <th scope="col">Super Admin</th>
+      <th scope="col">Phone Number</th>
     </tr>
   </thead>
   <tbody>
@@ -39,14 +39,9 @@
   </div>
 
 
-  <!-- <button type="button" class="btn btn-primary" >Launch
-    modal</button>
-   -->
-  <!-- Modal: modalPoll -->
-  <!-- <div class="modal fade right" id="modalPoll-1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" data-backdrop="false">
-    <div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document"> -->
+ 
       <ng-template #editModal let-modal>
+        <form [formGroup]="userForm" (ngSubmit)="onUserSubmit()">
        <div class="modal-content">
         <!--Header-->
         <div class="modal-header">
@@ -62,36 +57,41 @@
           
          
           <p class="text-center">
-            <strong>New Arrival!</strong>
+            <strong>New Staff!</strong>
           </p>
             <div class="form-label-group mb-4">
-              <label for="mb-1">Product Name</label>
-                <input type="text"  class="form-control" placeholder="Product Name" required autofocus>
+              <label for="mb-1"> User Name</label>
+                <input type="text"  class="form-control" placeholder="Name" formControlName="userName">
             </div>
             <div class="form-label-group mb-4">
-              <label for="mb-1">Quantity</label>
-                <input type="number"  class="form-control" placeholder="Quantity" required autofocus>
+              <label for="mb-1">Password</label>
+                <input type="password"  class="form-control" placeholder="Password" formControlName="password">
             </div>
             <div class="form-label-group mb-4">
-              <label for="mb-1">Reorder Quantity</label>
-                <input type="number"  class="form-control" placeholder="Reorder Quantity" required autofocus>
+              <label for="mb-1">Re Enter Password</label>
+                <input type="text"  class="form-control" placeholder="Password" required autofocus>
             </div>
             <div class="form-label-group mb-4">
-              <label for="mb-1">Price</label>
-                <input type="number"  class="form-control" placeholder="Price" required autofocus>
+              <label for="mb-1">Phone Number</label>
+                <input type="number"  class="form-control" placeholder="Price" formControlName="phoneNumber">
+            </div>
+            <div class="form-label-group mb-4">
+              <label for="mb-1"> Super Admin </label>
+            <label class="switch">
+              <input type="checkbox" formControlName="superAdmin">
+              <span class="slider round"></span>
+            </label>
             </div>
   
         </div>
   
         <!--Footer-->
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-primary waves-effect waves-light">Send
-            <!-- <i class="fa fa-paper-plane ml-1"></i> -->
+          <button type="submit" class="btn btn-primary waves-effect waves-light">Save
           </button>
           <button type="button" class="btn btn-outline-primary waves-effect" (click)="modal.close()">Cancel</button>
         </div>
       </div> 
+    </form>
     </ng-template>
-    <!-- </div>
-  </div> -->
-  <!-- Modal: modalPoll -->
+  
