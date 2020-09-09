@@ -23,4 +23,11 @@ route.post('/',async(req,res) => {
     res.json(resModel);
 });
 
+route.get('/getProducts',(req, res) =>{
+    Product.find((err,lists) => {
+        res.json(lists);
+    });
+});
+
+
 module.exports = route;

@@ -1,4 +1,4 @@
-<app-nav-bar></app-nav-bar>
+<app-nav-bar [source]="dashObj"></app-nav-bar>
 
 <div class="container">
   <div class="row">
@@ -6,6 +6,7 @@
   <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modalPoll-1" (click)="addNew()">Add New</button>
   </div>
   </div>
+  <div class="scroll">
    <table class="table mt-4">
   <thead class="thead-dark">
     <tr>
@@ -16,26 +17,16 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+    <tr *ngFor="let item of productsList; index as i">
+      <th scope="row">{{i+1}}</th>
+      <td>{{item.productName}}</td>
+      <td>{{item.quantity}}</td>
+      <td>{{item.price}}</td>
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
+    
   </tbody>
 </table>
+</div>
   </div>
 
 
@@ -47,6 +38,7 @@
     aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document"> -->
       <ng-template #editModal let-modal>
+        <form [formGroup]="productForm" (ngSubmit)="onProductSubmit()">
        <div class="modal-content">
         <!--Header-->
         <div class="modal-header">
@@ -66,31 +58,44 @@
           </p>
             <div class="form-label-group mb-4">
               <label for="mb-1">Product Name</label>
-                <input type="text"  class="form-control" placeholder="Product Name" required autofocus>
+                <input type="text"  class="form-control" placeholder="Product Name" formControlName="productName">
             </div>
             <div class="form-label-group mb-4">
               <label for="mb-1">Quantity</label>
-                <input type="number"  class="form-control" placeholder="Quantity" required autofocus>
+                <input type="number"  class="form-control" placeholder="Quantity" formControlName="quantity">
             </div>
             <div class="form-label-group mb-4">
               <label for="mb-1">Reorder Quantity</label>
-                <input type="number"  class="form-control" placeholder="Reorder Quantity" required autofocus>
+                <input type="number"  class="form-control" placeholder="Reorder Quantity" formControlName="reOrderQuantity">
+            </div>
+            <div class="form-label-group mb-4">
+              <label for="mb-1">Category</label>
+                <input type="text"  class="form-control" placeholder="Product Name" formControlName="productName">
+            </div>
+            <div class="form-label-group mb-4">
+              <label for="mb-1">Brand Name</label>
+                <input type="text"  class="form-control" placeholder="Product Name" formControlName="productName">
+            </div>
+            <div class="form-label-group mb-4">
+              <label for="mb-1">Delaer</label>
+                <input type="text"  class="form-control" placeholder="Product Name" formControlName="productName">
             </div>
             <div class="form-label-group mb-4">
               <label for="mb-1">Price</label>
-                <input type="number"  class="form-control" placeholder="Price" required autofocus>
+                <input type="number"  class="form-control" placeholder="Price" formControlName="price">
             </div>
   
         </div>
   
         <!--Footer-->
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-primary waves-effect waves-light">Send
+          <button type="submit" class="btn btn-primary waves-effect waves-light">Send
             <!-- <i class="fa fa-paper-plane ml-1"></i> -->
           </button>
           <button type="button" class="btn btn-outline-primary waves-effect" (click)="modal.close()">Cancel</button>
         </div>
       </div> 
+      </form>
     </ng-template>
     <!-- </div>
   </div> -->

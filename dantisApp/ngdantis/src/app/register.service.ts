@@ -41,6 +41,22 @@ export class RegisterService {
     return this.http.get<any>(`${this.uri}/exists`,{params: params})
   }
 
+  getUsersList(): Observable<any>{
+    return this.http.get<any>(`${this.uri}/getUser`)
+  }
+
+  postpProduct(user): Observable<any>{
+    let  uri: string = "http://localhost:3000/api/product";
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Access-Control-Allow-Origin': '*'
+      })
+    };
+    return this.http.post<any>(uri, user,httpOptions)
+    .pipe(catchError(this.handleError));
+  }
+
    handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

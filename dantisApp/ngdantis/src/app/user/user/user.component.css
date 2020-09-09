@@ -55,3 +55,18 @@
   .slider.round:before {
     border-radius: 50%;
   }
+
+  body {
+    background-color: #bdc3c7;
+  }
+  
+
+  body {
+    background-color: #bdc3c7;
+  }
+  
+  .scroll{
+  height: 400px;
+  overflow-y: auto;
+  width: 100%;
+  }

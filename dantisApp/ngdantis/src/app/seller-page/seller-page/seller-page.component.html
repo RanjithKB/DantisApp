@@ -1,0 +1,31 @@
+<app-nav-bar [source]="saleObj"></app-nav-bar>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-lg-2 mt-4">
+     <img src="assets/add_shopping_cart-black-18dp.svg"><span class="badge badge-danger">{{cartCount}}</span>  
+    
+  </div>
+  </div>
+  <div class="scroll">
+   <table class="table mt-4">
+  <thead class="thead-maroon">
+    <tr>
+      <div class="form-check col"><th scope="row">  <input class="form-check-input" type="checkbox"></th></div>
+      <th scope="col">Product Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of productsList; index as i">
+      <div class="form-check col"><td>  <input class="form-check-input" type="checkbox" ([ngModel])="item.select" (change)="selectProduct($event,item._id)"></td></div>
+      <td>{{item.productName}}</td>
+      <td>{{item.quantity}}</td>
+      <td>{{item.price}}</td>
+    </tr>
+    
+  </tbody>
+</table>
+</div>
+  </div>

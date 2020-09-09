@@ -12,6 +12,9 @@ import { ToastrService } from 'ngx-toastr';
 export class UserComponent implements OnInit {
   
   @ViewChild('editModal') editModal : TemplateRef<any>;
+  dashObj = {
+    isAdmin: true
+  };
 
   userForm = this.fb.group({
     userName: new FormControl(''),
@@ -19,6 +22,7 @@ export class UserComponent implements OnInit {
     phoneNumber: new FormControl(''),
     superAdmin: new FormControl('')
   })
+  usersList;
 
   constructor(private modalService: NgbModal,
     private fb: FormBuilder,
@@ -26,7 +30,7 @@ export class UserComponent implements OnInit {
     private toastr: ToastrService,) { }
 
   ngOnInit(): void {
-   
+   this.getUserList();
 
   }
 
@@ -43,7 +47,13 @@ export class UserComponent implements OnInit {
         this.toastr.error('Dantis Could not register You!','Failed!',{ progressBar: true } );
       }
       this.userForm.reset();
-      
+      this.getUserList();
+    });
+  }
+
+  getUserList(){
+    this.regService.getUsersList().subscribe(res =>{
+      this.usersList = res;
     });
   }
 
