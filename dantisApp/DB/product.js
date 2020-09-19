@@ -1,18 +1,27 @@
 const mongoose = require('mongoose');
 
-const product =  new mongoose.Schema({
+const product = new mongoose.Schema({
     productName: {
         type: String
     },
     quantity: {
         type: Number
     },
-    reorderQuantity: {
+    reOrderQuantity: {
         type: Number
     },
     price: {
         type: Number
+    },
+    category: {
+        type: String
+    },
+    brandName: {
+        type: String
+    },
+    dealer: {
+        type: String
     }
 });
 
-module.exports = Product = mongoose.model('product',product);
+module.exports = Product = mongoose.model('product', product);

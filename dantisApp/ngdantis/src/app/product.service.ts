@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 
 
@@ -13,12 +15,35 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  getProductsList(): Observable<any>{
+  getProductsList(): Observable<any> {
     return this.http.get<any>(`${this.uri}/getProducts`)
   }
 
+  getproductdetails(productId): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('productId', productId);
+    return this.http.get<any>(`${this.uri}/getProductDetails`, { params: params })
+  }
 
-   handleError(error: HttpErrorResponse) {
+  deleteproduct(productId): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('productId', productId);
+    return this.http.delete<any>(`${this.uri}/deleteProduct`, { params: params })
+  }
+
+  updateProduct(user): Observable<any> {
+    let uri = "http://localhost:3000/api/product/updateProduct";
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      })
+    };
+    return this.http.post<any>(uri, user, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);

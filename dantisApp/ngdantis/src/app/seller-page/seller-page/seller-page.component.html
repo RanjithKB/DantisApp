@@ -3,29 +3,76 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4 col-lg-2 mt-4">
-     <img src="assets/add_shopping_cart-black-18dp.svg"><span class="badge badge-danger">{{cartCount}}</span>  
-    
-  </div>
+      <img src="assets/add_shopping_cart-black-18dp.svg" (click)="openCart()"><span
+        class="badge badge-danger">{{cartCount}}</span>
+
+    </div>
   </div>
   <div class="scroll">
-   <table class="table mt-4">
-  <thead class="thead-maroon">
-    <tr>
-      <div class="form-check col"><th scope="row">  <input class="form-check-input" type="checkbox"></th></div>
-      <th scope="col">Product Name</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Price</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of productsList; index as i">
-      <div class="form-check col"><td>  <input class="form-check-input" type="checkbox" ([ngModel])="item.select" (change)="selectProduct($event,item._id)"></td></div>
-      <td>{{item.productName}}</td>
-      <td>{{item.quantity}}</td>
-      <td>{{item.price}}</td>
-    </tr>
-    
-  </tbody>
-</table>
-</div>
+    <table class="table mt-4">
+      <thead class="thead-maroon">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of productsList; trackBy:trackById">
+          <td> <input class=" form-check form-check-input" type="checkbox" ([ngModel])="item.select"
+              (change)="selectProduct($event,item._id)"></td>
+          <td>{{item.productName}}</td>
+          <td><input class="form-text-input" type="number" ([ngModel])="item.qtyRequired"
+              (change)="selectProduct($event,item._id)">/{{item.quantity}}</td>
+          <td>{{item.price}}</td>
+        </tr>
+
+      </tbody>
+    </table>
   </div>
+</div>
+
+<app-invoice *ngIf="invoice" [pdfAction]="any" [products]="invoiceProducts" (afterInvoice)="postInvoice($event)">
+</app-invoice>
+
+<ng-template #cartModal let-modal>
+  <div class="modal-header">
+    <p class="heading lead">Items in the Cart
+    </p>
+
+    <button type="button" (click)="modal.close()" class="btn btn-primary"><span>x</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cartItems">
+            <th scope="row"><button type="button" (click)="removeItem(item._id)" class="btn btn-primary"><span>x</span>
+              </button></th>
+            <td>{{item.productName}}</td>
+            <td>1</td>
+            <td>{{item.price}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <!--Footer-->
+  <div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-outline-primary waves-effect" (click)="clearCart()">Clear Cart</button>
+    <button type="submit" class="btn btn-primary waves-effect waves-light" (click)="generateInvoice()">Generate Invoice
+    </button>
+  </div>
+</ng-template>

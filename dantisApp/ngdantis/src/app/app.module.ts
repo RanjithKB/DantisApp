@@ -16,6 +16,7 @@ import { NavBarComponent } from './nav-bar/nav-bar/nav-bar.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { UserComponent } from './user/user/user.component';
 import { SellerPageComponent } from './seller-page/seller-page/seller-page.component';
+import { InvoiceComponent } from './invoice/invoice.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SellerPageComponent } from './seller-page/seller-page/seller-page.compo
     LoginComponent,
     NavBarComponent,
     UserComponent,
-    SellerPageComponent
+    SellerPageComponent,
+    InvoiceComponent
   ],
   imports: [
     BrowserModule,

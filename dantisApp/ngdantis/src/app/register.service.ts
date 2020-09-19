@@ -15,49 +15,73 @@ export class RegisterService {
 
   constructor(private http: HttpClient) { }
 
-  postRegisterUser(user): Observable<any>{
+  postRegisterUser(user): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
+        'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       })
     };
-    return this.http.post<any>(this.uri, user,httpOptions)
-    .pipe(catchError(this.handleError));
+    return this.http.post<any>(this.uri, user, httpOptions)
+      .pipe(catchError(this.handleError));
   }
 
-  authenticateUser(uName, pwd): Observable<any>{
+  authenticateUser(uName, pwd): Observable<any> {
     let params = new HttpParams();
     params = params.append('uName', uName);
     params = params.append('pwd', pwd);
 
-    return this.http.get<any>(`${this.uri}/auth`,{params: params})
+    return this.http.get<any>(`${this.uri}/auth`, { params: params })
   }
 
-  isUnameExists(uName): Observable<any>{
+  isUnameExists(uName): Observable<any> {
     let params = new HttpParams();
     params = params.append('uName', uName);
 
-    return this.http.get<any>(`${this.uri}/exists`,{params: params})
+    return this.http.get<any>(`${this.uri}/exists`, { params: params })
   }
 
-  getUsersList(): Observable<any>{
+  getUsersList(): Observable<any> {
     return this.http.get<any>(`${this.uri}/getUser`)
   }
 
-  postpProduct(user): Observable<any>{
-    let  uri: string = "http://localhost:3000/api/product";
+  deleteUser(productId): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('userId', productId);
+    return this.http.delete<any>(`${this.uri}/deleteUser`, { params: params });
+  }
+
+  getUserdetails(userId): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('userId', userId);
+    return this.http.get<any>(`${this.uri}/getUserDetails`, { params: params })
+  }
+
+  updateUser(user): Observable<any> {
+    let uri = "http://localhost:3000/api/userModel/updateUser";
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
+        'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       })
     };
-    return this.http.post<any>(uri, user,httpOptions)
-    .pipe(catchError(this.handleError));
+    return this.http.post<any>(uri, user, httpOptions)
+      .pipe(catchError(this.handleError));
   }
 
-   handleError(error: HttpErrorResponse) {
+  postpProduct(user): Observable<any> {
+    let uri: string = "http://localhost:3000/api/product";
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      })
+    };
+    return this.http.post<any>(uri, user, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
