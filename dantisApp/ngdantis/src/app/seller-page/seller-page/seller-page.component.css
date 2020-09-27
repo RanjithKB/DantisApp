@@ -23,6 +23,20 @@
       margin-left: -10px; 
   }
 
+  .width {
+    width: 15%;
+    border-color: #0a47ca;
+  }
   
+  .cart-form{
+    background: #fff;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    width: 70%;
+}
   
- 
+@media screen and (min-width: 992px) {
+  .modal-lg {
+    width: 950px; /* New width for large modal */
+  }
+}

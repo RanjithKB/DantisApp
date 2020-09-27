@@ -19,6 +19,10 @@ export class ProductService {
     return this.http.get<any>(`${this.uri}/getProducts`)
   }
 
+  getTaxList(): Observable<any> {
+    return this.http.get<any>(`${this.uri}/getTaxList`)
+  }
+
   getproductdetails(productId): Observable<any> {
     let params = new HttpParams();
     params = params.append('productId', productId);

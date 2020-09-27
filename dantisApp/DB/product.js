@@ -21,6 +21,9 @@ const product = new mongoose.Schema({
     },
     dealer: {
         type: String
+    },
+    taxId: {
+        type: String
     }
 });
 
