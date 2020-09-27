@@ -79,6 +79,12 @@
           <label for="mb-1">Price</label>
           <input type="number" class="form-control" placeholder="Price" formControlName="price">
         </div>
+        <div class="form-label-group mb-4">
+          <label for="mb-1">Tax Applied</label>
+          <select id="company" class="form-control" formControlName="taxId">
+            <option *ngFor="let item of taxList" [value]="item._id">{{item.Name}}</option>
+          </select>
+        </div>
 
       </div>
 

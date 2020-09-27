@@ -1,12 +1,13 @@
 var express = require('express');
 var Product = require('../DB/product');
+var Tax = require('../DB/tax');
 
 const route = express.Router();
 
 
 //add admin product
 route.post('/', async (req, res) => {
-    const { productName, quantity, reOrderQuantity, price, category, brandName, dealer } = req.body;
+    const { productName, quantity, reOrderQuantity, price, category, brandName, dealer, taxId } = req.body;
 
     let product = {};
     product.productName = productName;
@@ -16,6 +17,7 @@ route.post('/', async (req, res) => {
     product.category = category;
     product.brandName = brandName;
     product.dealer = dealer;
+    product.taxId = taxId;
 
     let resModel = {
         id: 0,
@@ -37,7 +39,7 @@ route.post('/', async (req, res) => {
 
 //update product
 route.post('/updateProduct', async (req, res) => {
-    const { id, productName, quantity, reOrderQuantity, price, category, brandName, dealer } = req.body;
+    const { id, productName, quantity, reOrderQuantity, price, category, brandName, dealer, taxId } = req.body;
 
     let product = {};
     product._id = id;
@@ -48,6 +50,7 @@ route.post('/updateProduct', async (req, res) => {
     product.category = category;
     product.brandName = brandName;
     product.dealer = dealer;
+    product.taxId = taxId;
 
     let resModel = {
         id: 0,
@@ -69,6 +72,16 @@ route.post('/updateProduct', async (req, res) => {
 route.get('/getProducts', (req, res) => {
     Product.find((err, lists) => {
         res.json(lists);
+    });
+});
+
+route.get('/getTaxList', (req, res) => {
+    Tax.find((err, lists) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.json(lists);
+        }
     });
 });
 

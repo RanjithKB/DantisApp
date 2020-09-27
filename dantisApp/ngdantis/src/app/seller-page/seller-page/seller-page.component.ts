@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ProductService } from './../../product.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { IfStmt } from '@angular/compiler';
 
 
 @Component({
@@ -32,6 +33,8 @@ export class SellerPageComponent implements OnInit {
       this.productsList.map(ele => {
         ele['select'] = false;
         ele['qtyRequired'] = 0;
+        ele['disableDecrease'] = true;
+        ele['disableIncrease'] = false;
       })
     });
   }
@@ -49,10 +52,13 @@ export class SellerPageComponent implements OnInit {
     this.cartItems = [];
     this.productsList.map(ele => {
       if (ele.select) {
+        let taxValue = this.getTaxValue(ele.taxId);
+        ele['TaxPrice'] = this.calculatePercentage(taxValue, ele.price);
         this.cartItems.push(ele);
       }
     });
     this.modalService.open(this.cartModal);
+    console.log('dds', this.cartItems);
   }
 
   clearCart() {
@@ -60,6 +66,8 @@ export class SellerPageComponent implements OnInit {
     this.cartCount = 0;
     this.productsList.map(ele => {
       ele.select = false;
+      ele.qtyRequired = 0;
+      ele.disableDecrease = true;
     });
     this.modalService.dismissAll();
   }
@@ -78,11 +86,15 @@ export class SellerPageComponent implements OnInit {
 
   generateInvoice() {
     this.invoice = true;
+    this.invoiceProducts = [];
     this.cartItems.map(ele => {
+      let taxValue = this.getTaxValue(ele.taxId);
       let obj = {
         name: ele.productName,
         price: ele.price,
-        qty: 1
+        qty: ele.qtyRequired,
+        taxPercent: taxValue,
+        taxPrice: ele.TaxPrice
       };
       this.invoiceProducts.push(obj);
     });
@@ -92,6 +104,63 @@ export class SellerPageComponent implements OnInit {
   postInvoice(eve) {
     this.invoice = false;
     this.clearCart();
+  }
+
+  decreaseQty(id) {
+    this.productsList.find(o => o._id == id).qtyRequired = parseInt(this.productsList.find(o => o._id == id).qtyRequired) - 1;
+    this.productsList.find(o => o._id == id).disableIncrease = false;
+    if (this.productsList.find(o => o._id == id).qtyRequired == 0) {
+      this.productsList.find(o => o._id == id).select = false;
+      this.productsList.find(o => o._id == id).disableDecrease = true;
+    } else {
+      this.productsList.find(o => o._id == id).disableDecrease = false;
+    }
+    this.cartCount = this.productsList.filter(o => o.select == true).length;
+  }
+
+  increaseQty(id) {
+    this.productsList.find(o => o._id == id).qtyRequired = parseInt(this.productsList.find(o => o._id == id).qtyRequired) + 1;
+    this.productsList.find(o => o._id == id).select = true;
+    this.productsList.find(o => o._id == id).disableDecrease = false;
+    if (this.productsList.find(o => o._id == id).qtyRequired == this.productsList.find(o => o._id == id).quantity) {
+      this.productsList.find(o => o._id == id).disableIncrease = true;
+    } else {
+      this.productsList.find(o => o._id == id).disableIncrease = false;
+    }
+    this.cartCount = this.productsList.filter(o => o.select == true).length;
+  }
+
+  changeQty(eve, id) {
+    this.productsList.find(o => o._id == id).qtyRequired = parseInt(eve.target.value);
+    if (this.productsList.find(o => o._id == id).qtyRequired == this.productsList.find(o => o._id == id).quantity) {
+      this.productsList.find(o => o._id == id).disableIncrease = true;
+    } else if (this.productsList.find(o => o._id == id).qtyRequired == 0) {
+      this.productsList.find(o => o._id == id).select = false;
+      this.productsList.find(o => o._id == id).disableDecrease = true;
+    } else {
+      this.productsList.find(o => o._id == id).select = true;
+      this.productsList.find(o => o._id == id).disableDecrease = false;
+    }
+    this.cartCount = this.productsList.filter(o => o.select == true).length;
+  }
+
+  getTaxValue(taxId) {
+    let taxValue;
+    if (taxId == "5f68d6f0e27a37bd69be915b") {
+      taxValue = 5;
+    } else if (taxId == "5f68d75be27a37bd69be915c") {
+      taxValue = 18;
+    } else {
+      taxValue = 20;
+    }
+    return taxValue;
+  }
+
+  calculatePercentage(percentage, total) {
+    let result;
+    let amount = (percentage / 100);
+    result = amount * total;
+    return result;
   }
 
 }

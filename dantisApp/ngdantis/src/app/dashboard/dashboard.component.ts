@@ -6,6 +6,7 @@ import { RegisterService } from '../register.service';
 import { ProductService } from '../product.service';
 
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -26,12 +27,14 @@ export class DashboardComponent implements OnInit {
     category: new FormControl(''),
     brandName: new FormControl(''),
     dealer: new FormControl(''),
+    taxId: new FormControl('')
   })
   productsList;
   producHeader: string;
   brand: string;
   buttonName: string;
   currentProductId;
+  taxList = [];
 
   constructor(private modalService: NgbModal,
     private fb: FormBuilder,
@@ -41,6 +44,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getproductsList();
+    this.getTaxList();
   }
 
   addNew() {
@@ -50,6 +54,9 @@ export class DashboardComponent implements OnInit {
     this.brand = "New Arrival!";
     this.buttonName = "Save";
     this.currentProductId = "0";
+    this.productForm.patchValue({
+      taxId: 0
+    });
   }
 
   onProductSubmit() {
@@ -90,6 +97,18 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  getTaxList() {
+    this.productService.getTaxList().subscribe(res => {
+      this.taxList = res;
+      let obj = {
+        "_id": 0,
+        "Name": "Select",
+        "Value": 0
+      }
+      this.taxList.unshift(obj);
+    });
+  }
+
   getproductsDetails(id) {
     this.productService.getproductdetails(id).subscribe(res => {
       this.productForm.patchValue({
@@ -99,7 +118,8 @@ export class DashboardComponent implements OnInit {
         price: res.price,
         category: res.category,
         brandName: res.brandName,
-        dealer: res.dealer
+        dealer: res.dealer,
+        taxId: res.taxId
       });
       this.currentProductId = id;
     });

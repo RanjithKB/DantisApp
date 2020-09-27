@@ -19,13 +19,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of productsList; trackBy:trackById">
-          <td> <input class=" form-check form-check-input" type="checkbox" ([ngModel])="item.select"
-              (change)="selectProduct($event,item._id)"></td>
+        <tr *ngFor="let item of productsList">
+          <td> </td>
+          <!--input type="checkbox" [value]="item.select" (change)="selectProduct($event,item._id)"-->
           <td>{{item.productName}}</td>
-          <td><input class="form-text-input" type="number" ([ngModel])="item.qtyRequired"
-              (change)="selectProduct($event,item._id)">/{{item.quantity}}</td>
-          <td>{{item.price}}</td>
+          <td>
+            <button type="button" class="btn btn-primary mr-1" (click)="decreaseQty(item._id)"
+              [disabled]="item.disableDecrease">-</button>
+            <input class="form-text-input width" type="number" [value]="item.qtyRequired"
+              (change)="changeQty($event,item._id)">
+            <button type="button" class="btn btn-primary ml-1" (click)="increaseQty(item._id)"
+              [disabled]="item.disableIncrease">+</button>
+            <span class="badge badge-success">/{{item.quantity}}</span>
+          </td>
+          <td>{{item.price | currency:'INR':'symbol'}}</td>
         </tr>
 
       </tbody>
@@ -37,14 +44,39 @@
 </app-invoice>
 
 <ng-template #cartModal let-modal>
-  <div class="modal-header">
+  <div class="modal-header modal-lg">
     <p class="heading lead">Items in the Cart
     </p>
 
     <button type="button" (click)="modal.close()" class="btn btn-primary"><span>x</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body modal-lg">
+    <div class="container cart-form">
+      <p class="heading lead">Billing Details
+      </p>
+      <div class="row">
+        <div class="col-md-6">
+          <input type="text" name="txtFName" class="form-control" placeholder="First Name" value="" />
+        </div>
+        <div class="col-md-6">
+          <input type="text" name="txtLName" class="form-control" placeholder="Last Name" value="" />
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <textarea class="form-control" rows="3" placeholder="Address"></textarea>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <input type="email" name="email" class="form-control" placeholder="Email" value="" />
+        </div>
+        <div class="col-md-6">
+          <input type="number" name="phoneNumber" class="form-control" placeholder="Phone Number" value="" />
+        </div>
+      </div>
+    </div>
     <div class="container-fluid">
       <table class="table">
         <thead class="thead-dark">
@@ -52,6 +84,7 @@
             <th scope="col">#</th>
             <th scope="col">Product Name</th>
             <th scope="col">Qty</th>
+            <th scope="col">Tax</th>
             <th scope="col">Price</th>
           </tr>
         </thead>
@@ -60,8 +93,12 @@
             <th scope="row"><button type="button" (click)="removeItem(item._id)" class="btn btn-primary"><span>x</span>
               </button></th>
             <td>{{item.productName}}</td>
-            <td>1</td>
-            <td>{{item.price}}</td>
+            <td>{{item.qtyRequired}}</td>
+            <td>{{item.TaxPrice | currency:'INR':'symbol'}}</td>
+            <td>{{item.qtyRequired * (item.price + item.TaxPrice) | currency:'INR':'symbol'}}</td>
+          </tr>
+          <tr *ngIf="cartItems.length == 0">
+            <td>No Items in the Cart</td>
           </tr>
 
         </tbody>
@@ -70,9 +107,10 @@
     </div>
   </div>
   <!--Footer-->
-  <div class="modal-footer justify-content-center">
+  <div class="modal-footer justify-content-center modal-lg">
     <button type="button" class="btn btn-outline-primary waves-effect" (click)="clearCart()">Clear Cart</button>
-    <button type="submit" class="btn btn-primary waves-effect waves-light" (click)="generateInvoice()">Generate Invoice
+    <button type="submit" class="btn btn-primary waves-effect waves-light" (click)="generateInvoice()">Generate
+      Invoice
     </button>
   </div>
 </ng-template>
