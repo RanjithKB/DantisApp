@@ -114,6 +114,7 @@ route.get('/auth', (req, res) => {
             if (user) {
                 result.success = true;
                 result.message = user.userName;
+                result.id = user._id;
                 res.json(result);
             } else {
                 result.success = false;
