@@ -7,8 +7,8 @@
         (click)="addNew()">Add New User</button>
     </div>
   </div>
-  <div class="scroll">
-    <table class="table mt-4">
+  <div>
+    <table class="table mt-4 table-scroll">
       <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
@@ -17,7 +17,8 @@
           <th scope="col">Phone Number</th>
         </tr>
       </thead>
-      <tbody>
+
+      <tbody class="body-half-screen">
         <tr *ngFor="let item of usersList;index as i" (click)="rowClick(item._id)">
           <th scope="row">{{i+1}}</th>
           <td>{{item.userName}}</td>
@@ -25,6 +26,7 @@
           <td>{{item.phoneNumber}}</td>
         </tr>
       </tbody>
+
     </table>
   </div>
 </div>

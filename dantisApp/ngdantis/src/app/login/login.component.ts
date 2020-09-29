@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RegisterService } from '../register.service'
-import { FormControl,FormGroup, FormBuilder } from '@angular/forms';
+import { DataServiceService } from '../data-service.service';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, observable } from 'rxjs';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
@@ -30,64 +31,67 @@ export class LoginComponent {
     private fb: FormBuilder,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private router: Router){
+    private router: Router,
+    private dataService: DataServiceService) {
 
   }
-  ngOnInit(){
+  ngOnInit() {
     this.loginShow = true;
     this.registerShow = false;
-    
+
   }
 
-  registerNow(){
+  registerNow() {
     this.registerShow = true;
     this.loginShow = false;
-    
+
   }
 
   onRegSubmit() {
-   this.isLoading = true;
-    if(this.loginForm.value.userName != null){
-      this.regService.authenticateUser(this.loginForm.value.userName,this.loginForm.value.password).subscribe((res: any) => {
-        if(res.success){
-          this.toastr.success('Dantis got You!, You are Welcome '+res.message,'Success!',{ progressBar: true } );
-         this.router.navigate(['/dash']);
+    this.isLoading = true;
+    if (this.loginForm.value.userName != null) {
+      this.regService.authenticateUser(this.loginForm.value.userName, this.loginForm.value.password).subscribe((res: any) => {
+        if (res.success) {
+          this.toastr.success('Dantis got You!, You are Welcome ' + res.message, 'Success!', { progressBar: true });
+          this.router.navigate(['/dash']);
+          this.dataService.logedInUserDetail.userId = res.id;
+          this.dataService.logedInUserDetail.userName = res.message;
         } else {
-          this.toastr.error('Dantis Could not recognize you!','Please Register!',{ progressBar: true } );
+          this.toastr.error('Dantis Could not recognize you!', 'Please Register!', { progressBar: true });
         }
         this.isLoading = false;
       });
-      this.loginForm.reset(); 
+      this.loginForm.reset();
     } else {
-      if(this.loginForm.value.registerForm.userName != "" || this.loginForm.value.registerForm.userName != null)
-      this.registerUser();
+      if (this.loginForm.value.registerForm.userName != "" || this.loginForm.value.registerForm.userName != null)
+        this.registerUser();
     }
-    
+
   }
 
-  onBlurName(){
+  onBlurName() {
     this.regService.isUnameExists(this.loginForm.value.registerForm.userName).subscribe((res: any) => {
-      if(!res.success){
-        this.toastr.warning('Dantis suggests some other name','User exists!',{ progressBar: true } );
-      } 
+      if (!res.success) {
+        this.toastr.warning('Dantis suggests some other name', 'User exists!', { progressBar: true });
+      }
     });
   }
 
-  registerUser(){
+  registerUser() {
     this.regService.postRegisterUser(this.loginForm.value.registerForm).subscribe((res: any) => {
-      if(res.success) {
+      if (res.success) {
         this.showSuccess();
       } else {
-        this.toastr.error('Dantis Could not register You!','Failed!',{ progressBar: true } );
+        this.toastr.error('Dantis Could not register You!', 'Failed!', { progressBar: true });
       }
       this.loginForm.get('registerForm').reset();
       this.loginShow = true;
       this.registerShow = false;
-    
+
     });
   }
-  
+
   showSuccess() {
-    this.toastr.success('Dantis registered You!','Success!',{ progressBar: true } );
+    this.toastr.success('Dantis registered You!', 'Success!', { progressBar: true });
   }
 }

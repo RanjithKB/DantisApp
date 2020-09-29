@@ -48,12 +48,12 @@ export class InvoiceComponent implements OnInit {
           columns: [
             [
               {
-                text: 'Ranjith',
+                text: this.products.fName + " " + this.products.lName,
                 bold: true
               },
-              { text: 'Near SM Temple' },
-              { text: 'ranjithkb34@gmail.com' },
-              { text: '8197857509' }
+              { text: this.products.address },
+              { text: this.products.email },
+              { text: this.products.phoneNum }
             ],
             [
               {

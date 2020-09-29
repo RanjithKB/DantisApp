@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="scroll">
-    <table class="table mt-4">
+    <table class="table mt-4 table-scroll">
       <thead class="thead-maroon">
         <tr>
           <th scope="col"></th>
@@ -18,7 +18,7 @@
           <th scope="col">Price</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="body-half-screen">
         <tr *ngFor="let item of productsList">
           <td> </td>
           <!--input type="checkbox" [value]="item.select" (change)="selectProduct($event,item._id)"-->
@@ -44,41 +44,17 @@
 </app-invoice>
 
 <ng-template #cartModal let-modal>
-  <div class="modal-header modal-lg">
+  <div class="modal-header">
     <p class="heading lead">Items in the Cart
     </p>
 
     <button type="button" (click)="modal.close()" class="btn btn-primary"><span>x</span>
     </button>
   </div>
-  <div class="modal-body modal-lg">
-    <div class="container cart-form">
-      <p class="heading lead">Billing Details
-      </p>
-      <div class="row">
-        <div class="col-md-6">
-          <input type="text" name="txtFName" class="form-control" placeholder="First Name" value="" />
-        </div>
-        <div class="col-md-6">
-          <input type="text" name="txtLName" class="form-control" placeholder="Last Name" value="" />
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col-md-12">
-          <textarea class="form-control" rows="3" placeholder="Address"></textarea>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <input type="email" name="email" class="form-control" placeholder="Email" value="" />
-        </div>
-        <div class="col-md-6">
-          <input type="number" name="phoneNumber" class="form-control" placeholder="Phone Number" value="" />
-        </div>
-      </div>
-    </div>
+  <div class="modal-body">
+
     <div class="container-fluid">
-      <table class="table">
+      <table class="table table-scroll">
         <thead class="thead-dark">
           <tr>
             <th scope="col">#</th>
@@ -88,7 +64,7 @@
             <th scope="col">Price</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="cartbody-half-screen">
           <tr *ngFor="let item of cartItems">
             <th scope="row"><button type="button" (click)="removeItem(item._id)" class="btn btn-primary"><span>x</span>
               </button></th>
@@ -103,13 +79,40 @@
 
         </tbody>
       </table>
-
     </div>
+
+    <div class="container cart-form">
+      <p class="heading lead">Billing Details
+      </p>
+      <div class="row">
+        <div class="col-md-6">
+          <input type="text" [(ngModel)]="fName" class="form-control" placeholder="First Name" />
+        </div>
+        <div class="col-md-6">
+          <input type="text" [(ngModel)]="lName" class="form-control" placeholder="Last Name" />
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <textarea [(ngModel)]="address" class="form-control" rows="3" placeholder="Address"></textarea>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <input type="email" [(ngModel)]="email" class="form-control" placeholder="Email" />
+        </div>
+        <div class="col-md-6">
+          <input type="number" [(ngModel)]="phone" class="form-control" placeholder="Phone Number" />
+        </div>
+      </div>
+    </div>
+
   </div>
   <!--Footer-->
-  <div class="modal-footer justify-content-center modal-lg">
+  <div class="modal-footer justify-content-center">
     <button type="button" class="btn btn-outline-primary waves-effect" (click)="clearCart()">Clear Cart</button>
-    <button type="submit" class="btn btn-primary waves-effect waves-light" (click)="generateInvoice()">Generate
+    <button type="submit" class="btn btn-primary waves-effect waves-light" (click)="generateInvoice()"
+      [disabled]="cartItems.length == 0">Generate
       Invoice
     </button>
   </div>

@@ -18,6 +18,12 @@ export class SellerPageComponent implements OnInit {
   cartItems = [];
   invoice: boolean;
   invoiceProducts = [];
+  fName: string;
+  lName: string;
+  address: string;
+  email: string;
+  phone: number;
+
   @ViewChild('cartModal') cartModal: TemplateRef<any>;
 
   constructor(private productService: ProductService,
@@ -57,7 +63,7 @@ export class SellerPageComponent implements OnInit {
         this.cartItems.push(ele);
       }
     });
-    this.modalService.open(this.cartModal);
+    this.modalService.open(this.cartModal, { size: 'lg', backdrop: 'static' });
     console.log('dds', this.cartItems);
   }
 
@@ -69,6 +75,11 @@ export class SellerPageComponent implements OnInit {
       ele.qtyRequired = 0;
       ele.disableDecrease = true;
     });
+    this.fName = "";
+    this.lName = "";
+    this.address = "";
+    this.email = "";
+    this.phone = null;
     this.modalService.dismissAll();
   }
 
@@ -94,11 +105,15 @@ export class SellerPageComponent implements OnInit {
         price: ele.price,
         qty: ele.qtyRequired,
         taxPercent: taxValue,
-        taxPrice: ele.TaxPrice
+        taxPrice: ele.TaxPrice,
       };
       this.invoiceProducts.push(obj);
     });
-
+    this.invoiceProducts['fName'] = this.fName;
+    this.invoiceProducts['lName'] = this.lName;
+    this.invoiceProducts['address'] = this.address;
+    this.invoiceProducts['email'] = this.email;
+    this.invoiceProducts['phoneNum'] = this.phone;
   }
 
   postInvoice(eve) {
