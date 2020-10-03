@@ -1,71 +1,71 @@
 <form [formGroup]="loginForm" (ngSubmit)="onRegSubmit()">
-    <section class="section bg-dark" *ngIf="loginShow">
+  <section class="section bg-dark" *ngIf="loginShow">
     <div class="container bg-dark">
-          <div class="text-center mt-8 mb-4 border border-dark">
-            <h1 class="h3 mb-4 font-weight-bold">Dantis Welcomes You!</h1>
-          </div>
-          <app-loader *ngIf="isLoading"></app-loader>
-          <div class="row-md-5 text-center">
-            <div class="border rounded border-secondary bg-secondary">
-              <div class="col-sm-9 text-center mt-4 mb-2 cust">
-                <input type="text" class="form-control" placeholder="Who are you?🙄" formControlName="userName">
-              </div>
-              <div class="col-sm-9 text-center mt-4 mb-2 cust">
-                <input type="password" class="form-control" placeholder="Look your back🙈" formControlName="password">
-              </div>
-              <div class="col text-center mt-4 mb-2">
-                <button type="submit" class="btn btn-md btn-primary">Get In</button>
-              </div>
-              
-              <div class="col text-right mt-3 mb-2 mr-7">
-                <a  class="font-weight-bolder" (click)="registerNow()">Register</a>
-              </div>
-            </div>
-          </div>
-        
+      <div class="text-center mt-8 mb-4 border border-dark">
+        <h1 class="h3 mb-4 font-weight-bold">Dantis Welcomes You!</h1>
       </div>
-    </section>
-    <section class="section bg-dark" *ngIf="registerShow">
-      <div class="container bg-dark">
-        
-          <div class="text-center mt-8 mb-4 border border-dark">
-            <h1 class="h3 mb-4 font-weight-bold">Dantis Welcomes You!</h1>
+      <app-loader *ngIf="isLoading"></app-loader>
+      <div class="row-md-5 text-center">
+        <div class="border rounded border-secondary bg-secondary">
+          <div class="col-sm-9 text-center mt-4 mb-2 cust">
+            <input type="text" class="form-control" placeholder="Who are you?🙄" formControlName="userName">
           </div>
-          <div class="border rounded border-secondary bg-secondary" formGroupName="registerForm">
-            <div class="row-md-12 mt-4 mb-2">
-              <div class="col-md-6 ">
-                <label>How do you want Dantis to call you?</label>
-              </div>
-              <div class="col-md-12 w-50">
-                <input type="text" class="form-control" placeholder="UserName" formControlName="userName" (blur)="onBlurName()">
-              </div>
-            </div>
-            <div class="row-md-12 mt-4 mb-2">
-              <div class="col-md-6 ">
-                <label>Your pass key?</label>
-              </div>
-              <div class="col-md-12 w-50">
-                <input type="password" class="form-control" placeholder="Password" formControlName="password">
-              </div>
-            </div>
-            <div class="row-md-12 mt-4 mb-2">
-              <div class="col-md-6 ">
-                <label>Your Phone number?</label>
-              </div>
-              <div class="col-md-12 w-50">
-                <input type="text" class="form-control" placeholder="Mobile number" formControlName="phoneNumber">
-              </div>
-            </div>
-              <div class="col text-center mt-4 mb-2">
-                <button type="submit" class="btn btn-md btn-primary">Enroll Now</button>
-              </div>
-            </div>
-          
-        
+          <div class="col-sm-9 text-center mt-4 mb-2 cust">
+            <input type="password" class="form-control" placeholder="Look your back🙈" formControlName="password">
+          </div>
+          <div class="col text-center mt-4 mb-2">
+            <button type="submit" class="btn btn-md btn-primary">Get In</button>
+          </div>
+
+          <div class="col text-right mt-3 mb-2 mr-7">
+            <!-- <a  class="font-weight-bolder" (click)="registerNow()">Register</a> -->
+          </div>
+        </div>
       </div>
-    </section>
-    </form>
-    <section class="section bg-dark">
-      
-    </section>
-    
+
+    </div>
+  </section>
+  <section class="section bg-dark" *ngIf="registerShow">
+    <div class="container bg-dark">
+
+      <div class="text-center mt-8 mb-4 border border-dark">
+        <h1 class="h3 mb-4 font-weight-bold">Dantis Welcomes You!</h1>
+      </div>
+      <div class="border rounded border-secondary bg-secondary" formGroupName="registerForm">
+        <div class="row-md-12 mt-4 mb-2">
+          <div class="col-md-6 ">
+            <label>How do you want Dantis to call you?</label>
+          </div>
+          <div class="col-md-12 w-50">
+            <input type="text" class="form-control" placeholder="UserName" formControlName="userName"
+              (blur)="onBlurName()">
+          </div>
+        </div>
+        <div class="row-md-12 mt-4 mb-2">
+          <div class="col-md-6 ">
+            <label>Your pass key?</label>
+          </div>
+          <div class="col-md-12 w-50">
+            <input type="password" class="form-control" placeholder="Password" formControlName="password">
+          </div>
+        </div>
+        <div class="row-md-12 mt-4 mb-2">
+          <div class="col-md-6 ">
+            <label>Your Phone number?</label>
+          </div>
+          <div class="col-md-12 w-50">
+            <input type="text" class="form-control" placeholder="Mobile number" formControlName="phoneNumber">
+          </div>
+        </div>
+        <div class="col text-center mt-4 mb-2">
+          <button type="submit" class="btn btn-md btn-primary">Enroll Now</button>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+</form>
+<section class="section bg-dark">
+
+</section>

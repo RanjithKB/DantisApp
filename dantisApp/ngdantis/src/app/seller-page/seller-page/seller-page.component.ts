@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ProductService } from './../../product.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IfStmt } from '@angular/compiler';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -23,14 +24,20 @@ export class SellerPageComponent implements OnInit {
   address: string;
   email: string;
   phone: number;
-
+  billingInfo: boolean = true;
+  paymentModes = [];
+  grandTotal: number = 0;
+  paidTotal: number = 0;
   @ViewChild('cartModal') cartModal: TemplateRef<any>;
 
   constructor(private productService: ProductService,
-    private modalService: NgbModal,) { }
+    private modalService: NgbModal,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.getproductsList();
+    this.billingInfo = true;
+    this.getPaymentModes();
   }
 
   getproductsList() {
@@ -70,6 +77,7 @@ export class SellerPageComponent implements OnInit {
   clearCart() {
     this.cartItems = [];
     this.cartCount = 0;
+    this.billingInfo = true;
     this.productsList.map(ele => {
       ele.select = false;
       ele.qtyRequired = 0;
@@ -89,13 +97,48 @@ export class SellerPageComponent implements OnInit {
     this.productsList[indexProduct].select = false;
     this.cartItems.splice(index, 1);
     this.cartCount = this.cartItems.length;
+    this.paidTotal = this.grandTotal = this.cartItems.reduce((sum, p) => sum + (p.qtyRequired * (p.price + p.TaxPrice)), 0);
+    this.billingInfo = true;
   }
 
   trackById(index: number, item: any) {
     return item._id;
   }
 
-  generateInvoice() {
+  insertInvoiceInfo() {
+    let objArray = [];
+    let billNo = new Date().valueOf();
+    this.cartItems.map(ele => {
+      let obj = {
+        productName: ele.productName,
+        productId: ele._id,
+        quantity: ele.qtyRequired,
+        price: ele.price,
+        taxId: ele.taxId,
+        billingNumber: billNo,
+        firstname: this.fName,
+        lastname: this.lName,
+        address: this.address,
+        email: this.email,
+        phonenumber: this.phone,
+        payModeId: 1,
+        paidamount: this.paidTotal
+      };
+      objArray.push(obj);
+    });
+
+    this.productService.generateInvoice(objArray).subscribe((res) => {
+      if (res.success) {
+        this.getproductsList();
+        this.toastr.success('Sale is Completed', 'Success!', { progressBar: true });
+        this.generateBill(billNo);
+      } else {
+        this.toastr.warning('Please Try Again', 'Warning!', { progressBar: true });
+      }
+    })
+  }
+
+  generateBill(billNo) {
     this.invoice = true;
     this.invoiceProducts = [];
     this.cartItems.map(ele => {
@@ -105,7 +148,7 @@ export class SellerPageComponent implements OnInit {
         price: ele.price,
         qty: ele.qtyRequired,
         taxPercent: taxValue,
-        taxPrice: ele.TaxPrice,
+        taxPrice: ele.TaxPrice
       };
       this.invoiceProducts.push(obj);
     });
@@ -114,6 +157,7 @@ export class SellerPageComponent implements OnInit {
     this.invoiceProducts['address'] = this.address;
     this.invoiceProducts['email'] = this.email;
     this.invoiceProducts['phoneNum'] = this.phone;
+    this.invoiceProducts['billNo'] = billNo;
   }
 
   postInvoice(eve) {
@@ -176,6 +220,22 @@ export class SellerPageComponent implements OnInit {
     let amount = (percentage / 100);
     result = amount * total;
     return result;
+  }
+
+  onNextClk() {
+    this.billingInfo = false;
+    this.paidTotal = this.grandTotal = this.cartItems.reduce((sum, p) => sum + (p.qtyRequired * (p.price + p.TaxPrice)), 0);
+  }
+
+  getPaymentModes() {
+    this.productService.getPaymentModes().subscribe(res => {
+      this.paymentModes = res;
+      // let obj = {
+      //   "payModeId": 0,
+      //   "payModeName": "Select",
+      // }
+      // this.paymentModes.unshift(obj);
+    });
   }
 
 }

@@ -23,6 +23,11 @@ export class ProductService {
     return this.http.get<any>(`${this.uri}/getTaxList`)
   }
 
+  getPaymentModes(): Observable<any> {
+    return this.http.get<any>(`${this.uri}/getPaymentModes`)
+  }
+
+
   getproductdetails(productId): Observable<any> {
     let params = new HttpParams();
     params = params.append('productId', productId);
@@ -44,6 +49,18 @@ export class ProductService {
       })
     };
     return this.http.post<any>(uri, user, httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  generateInvoice(invoiceData): Observable<any> {
+    let uri = "http://localhost:3000/api/product/generateInvoice";
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      })
+    };
+    return this.http.post<any>(uri, invoiceData, httpOptions)
       .pipe(catchError(this.handleError));
   }
 
