@@ -1,6 +1,8 @@
 var express = require('express');
 var Product = require('../DB/product');
 var Tax = require('../DB/tax');
+var PayModes = require('../DB/paymode');
+var Invoice = require('../DB/invoice');
 
 const route = express.Router();
 
@@ -85,6 +87,16 @@ route.get('/getTaxList', (req, res) => {
     });
 });
 
+route.get('/getPaymentModes', (req, res) => {
+    PayModes.find((err, lists) => {
+        if (err) {
+            res.json(err);
+        } else {
+            res.json(lists);
+        }
+    });
+});
+
 route.get('/getProductDetails', (req, res) => {
     let id = req.query.productId;
     var query = Product.where({ _id: id });
@@ -120,5 +132,64 @@ route.delete('/deleteProduct', (req, res) => {
     });
 });
 
+
+//generate Invoice
+route.post('/generateInvoice', async (req, res) => {
+
+    let invoiceInput = req.body;
+    let invoiceInfo;
+    let invoiceInfoList = [];
+    invoiceInput.forEach(element => {
+        invoiceInfo = {};
+        invoiceInfo.productName = element.productName;
+        invoiceInfo.quantity = element.quantity;
+        invoiceInfo.price = element.price;
+        invoiceInfo.taxId = element.taxId;
+        invoiceInfo.billingNumber = element.billingNumber;
+        invoiceInfo.datetime = new Date();
+        invoiceInfo.firstname = element.firstname;
+        invoiceInfo.lastname = element.lastname;
+        invoiceInfo.address = element.address;
+        invoiceInfo.email = element.email;
+        invoiceInfo.phonenumber = element.phonenumber;
+        invoiceInfo.payModeId = element.payModeId;
+        invoiceInfo.paidamount = element.paidamount;
+
+        invoiceInfoList.push(invoiceInfo);
+
+    });
+
+    let resModel = {
+        id: 0,
+        success: false
+    }
+
+    Invoice.collection.insertMany(invoiceInfoList, (err, doc) => {
+        if (err) {
+            resModel.success = false;
+        }
+        else {
+            resModel.success = true;
+            //resModel.id = invoiceModel._id
+            invoiceInput.forEach(element => {
+                // let product = {};
+                // product.quantity = element.quantity;
+                // let productModel = new Product(product);
+                Product.findOneAndUpdate({ _id: element.productId }, { $inc: { quantity: -element.quantity } }, (err, product) => {
+                    if (err) {
+                        resModel.success = false;
+                    } else {
+                        resModel.success = true;
+                        //resModel.id = productModel._id
+                    }
+                    //res.json(resModel);
+                });
+            });
+        }
+        res.json(resModel);
+    });
+
+
+});
 
 module.exports = route;

@@ -61,7 +61,7 @@ export class InvoiceComponent implements OnInit {
                 alignment: 'right'
               },
               {
-                text: `Bill No : ${((Math.random() * 1000).toFixed(0))}`,
+                text: `Bill No : ${this.products.billNo}`,
                 alignment: 'right'
               }
             ]
