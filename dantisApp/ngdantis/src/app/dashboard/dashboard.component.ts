@@ -18,9 +18,13 @@ export class DashboardComponent implements OnInit {
   dashObj = {
     isAdmin: true
   };
+  productCode: string;
+  productName: string;
+
 
   productForm = this.fb.group({
     productName: new FormControl(''),
+    productCode: new FormControl(''),
     quantity: new FormControl(''),
     reOrderQuantity: new FormControl(''),
     price: new FormControl(''),
@@ -28,13 +32,14 @@ export class DashboardComponent implements OnInit {
     brandName: new FormControl(''),
     dealer: new FormControl(''),
     taxId: new FormControl('')
-  })
+  });
   productsList;
   producHeader: string;
   brand: string;
   buttonName: string;
   currentProductId;
   taxList = [];
+  masterProductList;
 
   constructor(private modalService: NgbModal,
     private fb: FormBuilder,
@@ -93,7 +98,8 @@ export class DashboardComponent implements OnInit {
 
   getproductsList() {
     this.productService.getProductsList().subscribe(res => {
-      this.productsList = res;
+      this.productsList = JSON.parse(JSON.stringify(res));
+      this.masterProductList = JSON.parse(JSON.stringify(res));
     });
   }
 
@@ -113,6 +119,7 @@ export class DashboardComponent implements OnInit {
     this.productService.getproductdetails(id).subscribe(res => {
       this.productForm.patchValue({
         productName: res.productName,
+        productCode: res.productCode,
         quantity: res.quantity,
         reOrderQuantity: res.reOrderQuantity,
         price: res.price,
@@ -150,5 +157,35 @@ export class DashboardComponent implements OnInit {
     }, err => {
       this.toastr.warning('Dantis could not  delete  product that you are requested!', 'Please Try again!', { progressBar: true });
     });
+  }
+
+  searchCode(event) {
+    if (event == "") {
+      this.productsList = this.masterProductList;
+    } else {
+      this.productsList = this.productsList.filter((ele) => {
+        return ele.productCode.toLowerCase().includes(event.toLowerCase());
+      })
+    }
+  }
+
+  searchName(event) {
+    if (event == "") {
+      this.productsList = this.masterProductList;
+    } else {
+      this.productsList = this.productsList.filter((ele) => {
+        return ele.productName.toLowerCase().includes(event.toLowerCase());
+      })
+    }
+  }
+
+  clearNameBox() {
+    this.productsList = this.masterProductList;
+    this.productName = "";
+  }
+
+  clearBox() {
+    this.productsList = this.masterProductList;
+    this.productCode = "";
   }
 }

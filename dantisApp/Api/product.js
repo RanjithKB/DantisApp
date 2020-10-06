@@ -9,10 +9,11 @@ const route = express.Router();
 
 //add admin product
 route.post('/', async (req, res) => {
-    const { productName, quantity, reOrderQuantity, price, category, brandName, dealer, taxId } = req.body;
+    const { productName, productCode, quantity, reOrderQuantity, price, category, brandName, dealer, taxId } = req.body;
 
     let product = {};
     product.productName = productName;
+    product.productCode = productCode;
     product.quantity = quantity;
     product.reOrderQuantity = reOrderQuantity;
     product.price = price;
@@ -41,11 +42,12 @@ route.post('/', async (req, res) => {
 
 //update product
 route.post('/updateProduct', async (req, res) => {
-    const { id, productName, quantity, reOrderQuantity, price, category, brandName, dealer, taxId } = req.body;
+    const { id, productName, productCode, quantity, reOrderQuantity, price, category, brandName, dealer, taxId } = req.body;
 
     let product = {};
     product._id = id;
     product.productName = productName;
+    product.productCode = productCode;
     product.quantity = quantity;
     product.reOrderQuantity = reOrderQuantity;
     product.price = price;

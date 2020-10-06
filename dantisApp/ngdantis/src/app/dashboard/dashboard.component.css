@@ -59,3 +59,29 @@
   .body-half-screen{
     max-height: 60vh;
   }
+
+  input[name="searchBox"],
+select.searchInput {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #f8f2f2;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 0;
+  color: #f0e8e8;
+}
+
+input[name="searchBox"]:focus,
+select.searchInput:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.cancel{
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: rgb(253, 253, 253);
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}

@@ -12,17 +12,17 @@
     <table class="table mt-4 table-scroll">
       <thead class="thead-maroon">
         <tr>
-          <th scope="col"></th>
           <th scope="col">Product Name</th>
+          <th scope="col">Product Code <input type="text" [(ngModel)]="productCode" (ngModelChange)="searchCode($event)"
+              class="form-control"></th>
           <th scope="col">Quantity</th>
           <th scope="col">Price</th>
         </tr>
       </thead>
       <tbody class="body-half-screen">
         <tr *ngFor="let item of productsList">
-          <td> </td>
-          <!--input type="checkbox" [value]="item.select" (change)="selectProduct($event,item._id)"-->
           <td>{{item.productName}}</td>
+          <td>{{item.productCode}}</td>
           <td>
             <button type="button" class="btn btn-primary mr-1" (click)="decreaseQty(item._id)"
               [disabled]="item.disableDecrease">-</button>

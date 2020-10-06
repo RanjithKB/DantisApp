@@ -12,7 +12,16 @@
       <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Product Name</th>
+          <th scope="col">Product Name <input type="text" [(ngModel)]="productName" (ngModelChange)="searchName($event)"
+              class="searchInput w-50" name="searchBox"><button type="button" class="btn cancel"
+              (click)="clearNameBox()">
+              <span>×</span>
+            </button></th>
+          <th scope="col">Product Code<input type="text" [(ngModel)]="productCode" (ngModelChange)="searchCode($event)"
+              class="searchInput w-50" name="searchBox"><button type="button" class="btn cancel" (click)="clearBox()">
+              <span>×</span>
+            </button>
+          </th>
           <th scope="col">Quantity</th>
           <th scope="col">Price</th>
         </tr>
@@ -21,6 +30,7 @@
         <tr *ngFor="let item of productsList; index as i" (click)="rowClick(item._id)">
           <th scope="row">{{i+1}}</th>
           <td>{{item.productName}}</td>
+          <td>{{item.productCode}}</td>
           <td>{{item.quantity}}</td>
           <td>{{item.price}}</td>
         </tr>
@@ -54,6 +64,10 @@
         <div class="form-label-group mb-4">
           <label for="mb-1">Product Name</label>
           <input type="text" class="form-control" placeholder="Product Name" formControlName="productName">
+        </div>
+        <div class="form-label-group mb-4">
+          <label for="mb-1">Product Code</label>
+          <input type="text" class="form-control" placeholder="Product Code" formControlName="productCode">
         </div>
         <div class="form-label-group mb-4">
           <label for="mb-1">Quantity</label>
