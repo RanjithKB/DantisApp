@@ -28,7 +28,11 @@ export class SellerPageComponent implements OnInit {
   paymentModes = [];
   grandTotal: number = 0;
   paidTotal: number = 0;
+  productCode: string;
+  masterProductList;
+
   @ViewChild('cartModal') cartModal: TemplateRef<any>;
+
 
   constructor(private productService: ProductService,
     private modalService: NgbModal,
@@ -42,7 +46,14 @@ export class SellerPageComponent implements OnInit {
 
   getproductsList() {
     this.productService.getProductsList().subscribe(res => {
-      this.productsList = res;
+      this.productsList = JSON.parse(JSON.stringify(res));
+      this.masterProductList = JSON.parse(JSON.stringify(res));
+      this.masterProductList.map(ele => {
+        ele['select'] = false;
+        ele['qtyRequired'] = 0;
+        ele['disableDecrease'] = true;
+        ele['disableIncrease'] = false;
+      })
       this.productsList.map(ele => {
         ele['select'] = false;
         ele['qtyRequired'] = 0;
@@ -230,12 +241,17 @@ export class SellerPageComponent implements OnInit {
   getPaymentModes() {
     this.productService.getPaymentModes().subscribe(res => {
       this.paymentModes = res;
-      // let obj = {
-      //   "payModeId": 0,
-      //   "payModeName": "Select",
-      // }
-      // this.paymentModes.unshift(obj);
     });
+  }
+
+  searchCode(eve) {
+    // if (eve == "") {
+    //   this.productsList = JSON.parse(JSON.stringify(this.masterProductList));
+    // } else {
+    //   this.productsList = this.productsList.filter((ele) => {
+    //     return ele.productCode.toLowerCase() == eve.toLowerCase();
+    //   });
+    // }
   }
 
 }
